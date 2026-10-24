@@ -110,8 +110,12 @@ const server=http.createServer(async(req,res)=>{
     return sendJson(res,405,{error:'Method not allowed'});
   } catch(e){if(!res.headersSent)sendJson(res,e.status||500,{error:e.status?e.message:'Máy chủ gặp lỗi. Vui lòng thử lại.'});else if(!res.writableEnded)res.end();if(!e.status)console.error(e)}
 });
-const port=Number(process.env.PORT)||8787;server.on('error',e=>{if(e.code==='EADDRINUSE')console.error(`Cổng ${port} đang được ứng dụng khác dùng. Đặt PORT=8788 rồi chạy lại.`);else console.error(e)});server.listen(port,process.env.HOST||(process.env.NODE_ENV==='production'?'0.0.0.0':'127.0.0.1'),()=>console.log(`Polaris đang chạy tại http://127.0.0.1:${port}`));
-process.on('SIGINT',()=>{server.close(()=>{db.close();process.exit(0)})});
+module.exports = server;
+
+if (process.env.NODE_ENV !== 'production') {
+  const port = Number(process.env.PORT) || 8787;
+  server.listen(port, () => console.log(`Server listening on port ${port}`));
+}
 
 
 
