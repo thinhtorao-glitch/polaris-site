@@ -1,0 +1,8 @@
+{
+  "name": "polaris-learning-guide",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Polaris IT learning and career guidance site",
+  "scripts": { "start": "node server.js" },
+  "engines": { "node": ">=24" }
+}
