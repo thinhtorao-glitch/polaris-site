@@ -359,7 +359,7 @@ const resources=[
  {name:'Stack Overflow',type:'Cộng đồng',desc:'Cộng đồng hỏi đáp lập trình; hãy tìm lỗi cụ thể, đọc câu trả lời có giải thích và thử trong môi trường an toàn.',url:'https://stackoverflow.com/'}
 ];
 const pageNames={home:'Tổng quan',explore:'Khám phá lĩnh vực',roadmaps:'Lộ trình học',careers:'Nghề nghiệp',resources:'Tài nguyên',community:'Cộng đồng',friends:'Bạn bè',profile:'Trang cá nhân',settings:'Cài đặt',member:'Hồ sơ thành viên',dm:'Tin nhắn'};
-const $=s=>document.querySelector(s), $=s=>[...document.querySelectorAll(s)];
+var $=s=>document.querySelector(s), $=s=>[...document.querySelectorAll(s)];
 function fieldCard(f){return `<button class="field-card" data-field="${f.name}"><span class="card-arrow">↗</span><span class="field-icon tone-${f.tone}">${f.icon}</span><strong>${f.name}</strong><small>${f.desc}</small></button>`}
 function renderFields(){ $('#homeFields').innerHTML=fields.slice(0,4).map(fieldCard).join('');renderExplore() }
 function renderExplore(){const q=$('#fieldSearch').value.trim().toLocaleLowerCase('vi');const cat=$('#fieldFilters .selected').dataset.filter;const list=fields.filter(f=>(cat==='Tất cả'||f.tag===cat)&&(!q||`${f.name} ${f.desc} ${f.skills}`.toLocaleLowerCase('vi').includes(q)));$('#allFields').innerHTML=list.length?list.map(fieldCard).join(''):'<div class="empty-state">Chưa tìm thấy lĩnh vực phù hợp. Thử một từ khóa khác nhé.</div>'}
@@ -386,8 +386,8 @@ renderFields();renderRoadmaps();renderCareers();renderResources();$('#featuredRo
   <script>
 // Product demo enhancements: language switch, local-only demo profile, field guides and a conversational Wisp sample.
 (() => {
-  const $ = (s, root=document) => root.querySelector(s);
-  const $ = (s, root=document) => [...root.querySelectorAll(s)];
+  var $ = (s, root=document) => root.querySelector(s);
+  var $ = (s, root=document) => [...root.querySelectorAll(s)];
   const storage={get(k){try{return localStorage.getItem(k)}catch{return null}},set(k,v){try{localStorage.setItem(k,v)}catch{}},remove(k){try{localStorage.removeItem(k)}catch{}}};
   const supportedLanguages=["vi","en","fr","ja","ko","es","zh","de","pt","ar","ru","hi","it","th","id","tr","nl","pl","bn","ur","sw","ta","fa","uk","ms"];const savedLanguage=storage.get('polarisLanguage');let lang=supportedLanguages.includes(savedLanguage)?savedLanguage:'vi';
   let activeIntent = '';
@@ -538,7 +538,7 @@ async function syncAccountProgress(){const syncChecks=()=>document.querySelector
   <script>
 // Server-backed account, community inbox and optional Wisp AI/history layer.
 (()=>{
-  const $=s=>document.querySelector(s), $=s=>[...document.querySelectorAll(s)];
+  var $=s=>document.querySelector(s), $=s=>[...document.querySelectorAll(s)];
   const star='<svg viewBox="0 0 40 40" aria-hidden="true"><path d="M20 4.5c1.4 5.9 3.1 8.2 9 9.5-5.9 1.4-7.6 3.6-9 9.5-1.4-5.9-3.1-8.1-9-9.5 5.9-1.3 7.6-3.6 9-9.5Z"/><path d="M9 23c.8 3.2 2 4.4 5 5-3 .7-4.2 1.9-5 5-.7-3.1-1.9-4.3-5-5 3-.6 4.3-1.8 5-5Zm21-4c.6 2.5 1.5 3.4 4 4-2.5.6-3.4 1.5-4 4-.6-2.5-1.5-3.4-4-4 2.5-.6 3.4-1.5 4-4Z"/></svg>';
   const wispIcon=()=>$('.wisp-avatar')?.innerHTML||$('.wisp-symbol')?.innerHTML||'';
   const oldLogin=$('#loginButton');if(oldLogin){const fresh=oldLogin.cloneNode(true);oldLogin.replaceWith(fresh)}
@@ -618,7 +618,7 @@ el.querySelector('.modal-close').onclick=close;
 
 </script>
   <script>(()=> {
- const $=s=>document.querySelector(s);
+ var $=s=>document.querySelector(s);
  const api=async(path,opts={})=>{if(location.protocol==='file:')throw Error('Bạn đang mở Polaris.html trực tiếp nên không kết nối được API. Hãy chạy start-polaris.bat rồi mở http://127.0.0.1:8787/ (hoặc cổng hiện trong cửa sổ máy chủ).');let r;try{r=await fetch(path,{credentials:'same-origin',headers:{'Content-Type':'application/json'},...opts})}catch{throw Error('Không kết nối được API Polaris. Hãy mở trang bằng start-polaris.bat, không mở tệp Polaris.html trực tiếp.')}let d={};try{d=await r.json()}catch{}if(!r.ok)throw Error(d.error||'API không tồn tại trên máy chủ hiện tại. Hãy đóng cửa sổ máy chủ Polaris cũ rồi chạy lại start-polaris.bat.');return d};
  const toast=message=>{const box=$('#toast');if(box){box.textContent=message;box.classList.add('show');clearTimeout(toast.timer);toast.timer=setTimeout(()=>box.classList.remove('show'),2800)}};
  const auth=()=>window.PolarisAuth?.current,showLogin=()=>$('#loginButton')?.click();let roomStream=null,roomIds=new Set(),memberUser=null,memberStatus=null,profileBackgroundImage='';
