@@ -9,8 +9,8 @@ const { DatabaseSync } = require('node:sqlite');
 const ROOT = __dirname;
 // Read private local configuration without adding dependencies; .env is git-ignored.
 try { for (const line of fs.readFileSync(path.join(ROOT,'.env'),'utf8').split(/\r?\n/)) { const m=line.match(/^\s*([A-Z_]+)\s*=\s*(.*?)\s*$/); if(m&&!process.env[m[1]]) process.env[m[1]]=m[2].replace(/^(["'])(.*)\1$/,'$2'); } } catch {}
-const DATA = process.env.POLARIS_DATA_DIR || path.join(ROOT, '.polaris-data');
-fs.mkdirSync(DATA, { recursive: true });
+const DATA = process.env.VERCEL ? '/tmp' : (process.env.POLARIS_DATA_DIR || path.join(ROOT, '.polaris-data'));
+try { fs.mkdirSync(DATA, { recursive: true }); } catch (e) {}
 const db = new DatabaseSync(path.join(DATA, 'polaris.sqlite'));
 db.exec(`PRAGMA journal_mode=WAL;
 CREATE TABLE IF NOT EXISTS users(id INTEGER PRIMARY KEY, username TEXT NOT NULL, uname TEXT NOT NULL UNIQUE, salt TEXT NOT NULL, hash TEXT NOT NULL, created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP);
